@@ -18,7 +18,7 @@ export default function Home(){
     <>
     <Appbar/>
         <Container component="main" maxWidth="xs" sx={{textAlign:"center", pt: 25}}>
-            <Content name = "Home Page"/>
+            <Content name = "Contact Page"/>
         </Container>
     </>
     

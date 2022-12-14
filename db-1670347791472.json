@@ -1,0 +1,22 @@
+{
+  "news": [
+    {
+      "id": 1,
+      "title": "this is a title 1",
+      "description": "this is a description",
+      "category": "sports"
+    },
+    {
+      "id": 1,
+      "title": "this is a title 2",
+      "description": "this is a description",
+      "category": "chismis"
+    },
+    {
+      "id": 1,
+      "title": "this is a title 3",
+      "description": "this is a description",
+      "category": "food"
+    }
+  ]
+}

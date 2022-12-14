@@ -1,0 +1,129 @@
+onSubmit: async (values) => {
+    const res = await axios.get('https://634ccfadf5d2cc648e950444.mockapi.io/userData');
+    const data = res.data
+    const result = data.filter(user => {
+        if (user.username === values.username && user.password === values.password ) {
+            return user
+    }})
+
+    if (result.length === 0) {
+        setMessage('User does not exist')
+        setSubmitted(true)
+        setOpen(true)
+    } else {
+        await axios.post('/api/login', values)
+        setLoading(true)
+        router.replace('/Profile')
+    }
+
+},
+
+
+
+import { NextApiRequest, NextApiResponse } from 'next';
+import { setCookie } from 'nookies'
+import { sign } from 'jsonwebtoken';
+
+const secret = process.env.SECRET;
+
+export default async (req:NextApiRequest, res:NextApiResponse) => {
+  const { username } = req.body;
+
+  try {
+    const token = sign(
+      {
+        exp:Math.floor(Date.now() / 1000) * 60 * 60 * 24 * 30,
+        username: username,
+      },
+      secret
+    );
+
+    setCookie({ res }, 'UserJWT', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+
+    setCookie({ res }, 'LoginStatus', "true", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: 30 * 24 * 60 * 60,
+      path: '/',
+    });
+
+    res.status(200).end();
+  }
+   catch (e) {
+    res.status(400).send(e);
+  }
+}
+
+f ((cookies?.LoginStatus === "false" || !cookies?.LoginStatus) || !cookies?.UserJWT) {
+  return {
+    redirect: {
+      permanent: false,
+      destination: '/Login'
+    }
+  }
+}
+
+
+
+<Container maxWidth="sm">
+        <div className="vh-50 d-flex flex-column justify-content-center align-items-center custom">
+          <div hidden={!submitted} className="alert alert-primary" role="alert">
+            {message} {/* message submitted appear */}
+          </div>
+          <Typography variant="h3" component="h4">
+            Login
+          </Typography>;
+          
+          <form className="w-50" onSubmit={formik.handleSubmit}>
+
+            {/* username */}
+            <div className="mb-3"> 
+              <label htmlFor="username" className="form-label">
+                Username
+              </label>
+              <input
+                type="text"
+                name="username"
+                className="form-control"
+                placeholder="John Doe"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                required
+                
+              />
+              {formik.touched.username && formik.errors.username ? <div className="text-danger">{formik.errors.username}</div>:null }
+
+            </div>
+            {/* password */}
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                className="form-control"
+                placeholder="****"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                required
+                
+              />
+              
+              
+              {formik.touched.password && formik.errors.password ? <div className="text-danger">{formik.errors.password}</div>:null }
+            </div>
+            {/* <Button type="submit" variant="outlined" sx={{width:"25%",mt:2,mr:13}}>
+              Login
+            </Button> */}
+
+          </form>
+        </div>
+        </Container>

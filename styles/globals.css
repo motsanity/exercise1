@@ -24,3 +24,24 @@ a {
     background: black;
   }
 }
+
+.divsec{
+  text-align: center;
+  border-style: solid;
+}
+
+
+.container{
+  text-align: left;
+  border-style: solid;
+  margin: 3% 15%;
+}
+
+.divapp{
+  background-color: white;
+}
+
+.custom{
+  padding: 5rem 0rem;
+}
+
